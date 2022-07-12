@@ -31,8 +31,6 @@ class HerokuDiscoverRunner(DiscoverRunner):
                         table_name
                     FROM
                         information_schema.tables
-                    WHERE
-                        table_schema = 'public';
                 """
             )
             public_tables = public_table_query.fetchall()
