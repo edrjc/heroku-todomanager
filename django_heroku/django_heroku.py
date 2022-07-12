@@ -28,7 +28,7 @@ class HerokuDiscoverRunner(DiscoverRunner):
             public_table_query = cursor.execute(
                 """
                     SELECT
-                        table_name
+                        * 
                     FROM
                         information_schema.tables
                 """
