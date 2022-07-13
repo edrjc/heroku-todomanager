@@ -1,0 +1,29 @@
+<!-- todo_list/todo_app/templates/todo_app/todoitem_form.html -->
+{% extends "base.html" %}
+
+{% load bootstrap3 %}
+
+{% block content %}
+    <h3>{{ title }}</h3>
+
+    <form method="post" class="form">
+        {% csrf_token %}
+        {% bootstrap_form form %}
+        {% buttons %}
+            <button type="submit" class="btn btn-success">
+                Save
+            </button>
+            <button class="btn btn-primary" onclick="location.href='{% url "list" todo_list.id %}'">
+                Cancel
+            </button>
+            {% if object %}
+            <input
+                value="Delete this ToDo"
+                class="btn btn-danger"
+                onclick="location.href=
+                '{% url "item-delete" todo_list.id object.id %}'">
+            {% endif %}
+        {% endbuttons %}
+    </form>
+
+{% endblock %}

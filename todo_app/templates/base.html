@@ -1,0 +1,45 @@
+{% load static %}
+
+<!-- todo_list/todo_app/templates/base.html -->
+<!-- Base template -->
+<!doctype html>
+<html lang="en">
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>ToDo Manager</title>
+    <link rel="stylesheet" type="text/css" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css" />
+    <link href="{% static 'jumbotron-narrow.css' %}" rel="stylesheet" type="text/css">
+    <link href="{% static 'app.css' %}" rel="stylesheet" type="text/css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+    <script type="text/javascript" src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+</head>
+
+<body>
+    <div class="container">
+        <div class="header clearfix">
+            <nav>
+              <ul class="nav nav-pills pull-right">
+                <!-- <li role="presentation"><a href="#">About</a></li>
+                <li role="presentation"><a href="#">Contact</a></li> -->
+                {% if user.is_authenticated %}
+                <li role="presentation"><a class="user-logged">Hello, {{ user.username }}.</a></li>
+                <li role="presentation"><a href="{% url 'logout' %}?next=/">Log out</a></li>
+                {% else %}
+                <li role="presentation"><a href="{% url 'login' %}?next=/">Log in</a></li>
+                {% endif %}
+              </ul>
+            </nav>
+            <a href="/"><h3 class="text-muted">ToDo Manager</h3></a>
+          </div>
+        <div>
+            {% block content %}
+            This content will be replaced by different html code for each page.
+            {% endblock %}
+        </div>
+    </div>
+</body>
+
+</html>

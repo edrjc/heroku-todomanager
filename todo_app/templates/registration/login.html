@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+
+{% load bootstrap3 %}
+
+{% block title %}Quote Login{% endblock title %}
+
+{% block sidenav %}
+    <li><a href="/">Home</a></li>    
+{% endblock sidenav %}
+
+{% block content %}
+<h1>Please Login</h1>
+<p>You must be logged in to create or view ToDos.</p>
+
+<form method="post" action="{% url 'login' %}">
+    {% csrf_token %}
+    {% bootstrap_form form %}
+    {% buttons %}
+        <input value="Login" type="submit" class="btn btn-success">
+        <p>Not registered yet? <a href="{% url 'register' %}">Register here</a>.</p>
+        <input type="hidden" name="next" value="{{ next }}" />
+    {% endbuttons %}
+</form>
+
+{% endblock content %}

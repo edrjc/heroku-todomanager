@@ -1,0 +1,4 @@
+.user-logged {
+  pointer-events: none;
+  background-color: #eee;
+}
