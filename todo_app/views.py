@@ -16,6 +16,8 @@ from .models import ToDoItem, ToDoList
 
 from django.template.defaulttags import register
 
+from .utils import date_time
+
 @register.filter
 def get_value(dictionary, key):
     return dictionary.get(key)
@@ -85,6 +87,12 @@ class ItemCreate(LoginRequiredMixin, CreateView):
         "due_date",
     ]
 
+    def get_form(self):
+        '''add date picker in forms'''
+        form = super(ItemCreate, self).get_form()
+        form.fields['due_date'].widget = date_time.DateTimeLocalField().widget
+        return form
+
     def form_valid(self, form): # new
         form.instance.username = self.request.user
         return super().form_valid(form)
@@ -114,6 +122,12 @@ class ItemUpdate(LoginRequiredMixin, UpdateView):
         "description",
         "due_date",
     ]
+
+    def get_form(self):
+        '''add date picker in forms'''
+        form = super(UpdateView, self).get_form()
+        form.fields['due_date'].widget = date_time.DateTimeLocalField().widget
+        return form
 
     def get_object(self, queryset=None):
         """ Hook to ensure object is owned by request.user. """
