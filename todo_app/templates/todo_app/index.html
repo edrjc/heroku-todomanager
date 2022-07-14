@@ -3,34 +3,48 @@
 
 {% block content %}
 
-<div class="col-md-2"></div>
-<div class="col-md-8 text-center">
-{% if object_list %}
-<h2>My list of ToDos</h2>
-{% else %}
-<h2>You have no lists!</h2>
-{% endif %}
-<ul class="list-group text-left">
-    {% for todolist in object_list %}
-    <li class="list-group-item">
-        <span class="badge">{{ list_x_item_count|get_value:todolist.id }}</span>
-        <div
-            role="button"
-            onclick="location.href='{% url "list" todolist.id %}'">
-            {{ todolist.title }}
+<div class="row">
+    <div class="col-md-2"></div>
+    <div class="col-md-8 text-center">
+    {% if object_list %}
+    <h2>My list of ToDos</h2>
+    {% else %}
+    <h2>You have no lists!</h2>
+    {% endif %}
+    <ul class="list-group text-left">
+        {% for todolist in object_list %}
+        <li class="list-group-item">
+            <span class="badge">{{ list_x_item_count|get_value:todolist.id }}</span>
+            <div
+                role="button"
+                onclick="location.href='{% url "list" todolist.id %}'">
+                {{ todolist.title }}
+            </div>
+        </li>
+        {% empty %}
+        {% endfor %}
+    </ul>
+    
+    <p>
+        <input class="btn btn-lg btn-success"
+            value="Add a new ToDo list"
+            type="button"
+            onclick="location.href='{% url "list-add" %}'"/>
+        <input class="btn btn-lg btn-warning"
+            value="Share a ToDo list"
+            type="button"
+            onclick="location.href='{% url "list-shared-add" %}'">
         </div>
-    </li>
-    {% empty %}
-    {% endfor %}
-</ul>
-
-<p>
-    <input class="btn btn-lg btn-success"
-        value="Add a new ToDo list"
-        type="button"
-        onclick="location.href='{% url "list-add" %}'"/>
-</p>
+    </p>
+    
+    </div>
+    
+    <div class="col-md-2"></div>
 </div>
-<div class="col-md-2"></div>
+
+<div class="col-md-12 text-center">
+    <h2>Others list of ToDos</h2>
+    <p>...</p>
+</div>
 
 {% endblock %}

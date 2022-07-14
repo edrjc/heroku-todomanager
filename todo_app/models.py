@@ -19,6 +19,14 @@ class ToDoList(models.Model):
     def __str__(self):
         return self.title
 
+class ToDoListShared(models.Model):
+    username_sharer = models.IntegerField()
+    username_consumer = models.IntegerField()
+    todo_list = models.ForeignKey(ToDoList, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return self.todo_list.title
+
 class ToDoItem(models.Model):
     title = models.CharField(max_length=100)
     description = models.TextField(null=True, blank=True)

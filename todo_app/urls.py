@@ -26,4 +26,5 @@ urlpatterns = [
         views.ItemDelete.as_view(),
         name="item-delete",
     ),
+    path("list_shared/add/", views.ListSharedCreate.as_view(), name="list-shared-add"),
 ]

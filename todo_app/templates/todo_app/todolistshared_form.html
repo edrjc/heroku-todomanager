@@ -1,0 +1,23 @@
+<!-- todo_list/todo_app/templates/todo_app/todolist_form.html -->
+{% extends "base.html" %}
+
+{% load bootstrap3 %}
+
+{% block content %}
+
+    <h2>{{ title }}</h2>
+
+    <form method="post" class="form">
+      {% csrf_token %}
+      {% bootstrap_form form %}
+      {% buttons %}
+        <button type="submit" class="btn btn-success">
+            Save
+        </button>
+        <button class="btn btn-primary" onclick="location.href='{% url "index" %}';">
+            Cancel
+        </button>
+      {% endbuttons %}
+    </form>
+
+{% endblock %}

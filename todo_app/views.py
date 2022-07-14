@@ -1,4 +1,6 @@
 # todo_list/todo_app/views.py
+from django import forms
+from django.forms import Select
 from django.http import Http404, HttpResponseRedirect
 from django.views.generic.edit import CreateView
 from django.contrib.auth.forms import UserCreationForm
@@ -12,11 +14,13 @@ from django.views.generic import (
     UpdateView,
     DeleteView,
 )
-from .models import ToDoItem, ToDoList
+from .models import ToDoItem, ToDoList, ToDoListShared
 
 from django.template.defaulttags import register
 
 from .utils import date_time
+from django.contrib.auth.models import User
+from django.db.models import Q
 
 @register.filter
 def get_value(dictionary, key):
@@ -179,3 +183,39 @@ class ItemDelete(LoginRequiredMixin, DeleteView):
         context = super().get_context_data(**kwargs)
         context["todo_list"] = self.object.todo_list
         return context
+
+######### sharing content #########
+class ListSharedCreate(LoginRequiredMixin, CreateView):
+    login_url = reverse_lazy('login')
+    model = ToDoListShared
+    fields = [
+        "todo_list",
+        "username_consumer",
+    ]
+
+    def get_form(self):
+        '''add date picker in forms'''
+        form = super(CreateView, self).get_form()
+        form.fields['todo_list'].queryset = ToDoList.objects.filter(username=self.request.user)
+        form.fields['username_consumer'] = forms.ChoiceField(choices=
+            ((c.id, c) for c in User.objects.filter(~Q(id=self.request.user.id)))
+        )
+        return form
+    
+    def form_valid(self, form): # new
+        form.instance.username_sharer = self.request.user.id
+        return super().form_valid(form)
+    
+    def get_context_data(self):
+        context = super(CreateView, self).get_context_data()
+        context["title"] = "Share a ToDo List"
+        return context
+    
+    def get_initial(self):
+        initial_data = super(CreateView, self).get_initial()
+        todo_list = ToDoList.objects.filter(username=self.request.user).first()
+        initial_data["todo_list"] = todo_list
+        return initial_data
+    
+    def get_success_url(self):
+        return reverse_lazy("index")
