@@ -91,6 +91,7 @@ class ItemCreate(LoginRequiredMixin, CreateView):
         '''add date picker in forms'''
         form = super(ItemCreate, self).get_form()
         form.fields['due_date'].widget = date_time.DateTimeLocalField().widget
+        form.fields['todo_list'].queryset = ToDoList.objects.filter(username=self.request.user)
         return form
 
     def form_valid(self, form): # new
@@ -127,6 +128,7 @@ class ItemUpdate(LoginRequiredMixin, UpdateView):
         '''add date picker in forms'''
         form = super(UpdateView, self).get_form()
         form.fields['due_date'].widget = date_time.DateTimeLocalField().widget
+        form.fields['todo_list'].queryset = ToDoList.objects.filter(username=self.request.user)
         return form
 
     def get_object(self, queryset=None):
